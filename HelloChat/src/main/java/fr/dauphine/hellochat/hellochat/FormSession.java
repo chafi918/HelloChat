@@ -26,6 +26,7 @@ import javax.websocket.WebSocketContainer;
  * @author macbookpro
  */
 public class FormSession implements Session{
+	private Session session;
     private FormUser user;
     private FormRoom room;
     private Date date;

@@ -4,7 +4,26 @@
  * and open the template in the editor.
  */
 
-	var wsocket;
+		var webSocket = new WebSocket("ws://localhost:8080/HelloChat/form");
+		webSocket.onmessage = function processMessage(formMessage) {
+			var json = JSON.parse(formMessage.data);
+			document.getElementById('messages').value += json.received +':: ' + json.sender + ':' + json.message + '\n';
+	        }
+		
+		function send() {
+			var message = document.getElementById('message');
+			webSocket.send(JSON.stringify({'message' : message.value, 'received' : null, 'sender' : 'Server'}));
+			message.value = "";
+		}
+		
+		window.onbeforeunload = function() {
+			webSocket.onclose = function() {
+				webSocket.close();
+			}
+		};
+		
+		
+/*	var wsocket;
 	var serviceLocation = "ws://0.0.0.0:8080/HelloChat/form/";
 	var $nickName;
 	var $message;
@@ -65,3 +84,24 @@
 			leaveRoom();
 		});
 	});
+	
+		<script type="text/javascript">
+		var webSocket = new WebSocket("ws://localhost:8080/HelloChat/form");
+		webSocket.onmessage = function processMessage(formMessage) {
+			var json = JSON.parse(formMessage.data);
+			document.getElementById('messages').value += json.message + '\n';
+	        }
+		
+		function send() {
+			var message = document.getElementById('message');
+			webSocket.send(JSON.stringify({'message' : message.value, 'received' : null, 'sender' : 'Server'}));
+			message.value = "";
+		}
+		
+		window.onbeforeunload = function() {
+			webSocket.onclose = function() {
+				webSocket.close();
+			}
+		};
+	</script>
+	*/
